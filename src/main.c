@@ -9,4 +9,7 @@ void main(){
   uart_txchar('h');
   uart_txchar('w');
   uart_txchar('\n');
+
+  while (true)
+    asm("wfi");
 };
