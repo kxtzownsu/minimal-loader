@@ -7,6 +7,7 @@ include $(MAKE_SCRIPTS_DIR)/directories.mk
 include $(MAKE_SCRIPTS_DIR)/cleanup.mk
 
 include $(MAKE_SCRIPTS_DIR)/obj.mk
+
 ## format:
 ## '[2-space padding][8-char word][2-space padding][extra info, e.g: filename]'
 all: $(BDIR) $(OBJ_DIR) $(ELF_DIR) $(OBJS)
