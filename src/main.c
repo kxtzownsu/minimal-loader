@@ -1,4 +1,6 @@
 #include <stdint.h>
+#include <stdbool.h>
+
 #include "setup.h"
 #include "uart.h"
 
