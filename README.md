@@ -20,11 +20,8 @@ The UART output is meant to look like the Haven's RO logs, with a little bit of 
 
 ## Docs
 
-<!--
-These are planned to be written & added at a later date.
 - [Building](docs/BUILDING.md)
 - [Making a final image](docs/MAKE_A_FINAL_IMAGE.md)
--->
 - [Signer](docs/SIGNER.md)
 - [Carver](docs/CARVER.md)
 - [Packer](docs/PACKER.md)
