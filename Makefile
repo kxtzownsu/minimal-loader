@@ -8,6 +8,7 @@ include $(MAKE_SCRIPTS_DIR)/cleanup.mk
 include $(MAKE_SCRIPTS_DIR)/linker.mk
 include $(MAKE_SCRIPTS_DIR)/signer.mk
 
+include $(REPO_ROOT)/src/build.mk
 include $(MAKE_SCRIPTS_DIR)/obj.mk
 
 ## echo format:

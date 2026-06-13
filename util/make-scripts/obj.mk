@@ -1,15 +1,13 @@
-OBJS += $(OBJ_DIR)/init.o
-OBJS += $(OBJ_DIR)/main.o
-OBJS += $(OBJ_DIR)/vectors.o
-OBJS += $(OBJ_DIR)/setup.o
-OBJS += $(OBJ_DIR)/uart.o
+OBJS += $(foreach obj,$(src-y),$(OBJ_DIR)/$(obj))
+OBJ_DIRS := $(filter-out $(OBJ_DIR),$(sort $(patsubst %/,%,$(dir $(OBJS)))))
 
-## format:
-## '[2-space padding][8-char word][2-space padding][extra info, e.g: filename]'
-$(OBJ_DIR)/%.o: src/%.c | $(OBJ_DIR)
-	$(Q)echo "  CC        $(notdir $<)"
+$(OBJ_DIRS):
+	$(Q)$(MKDIR) -p $@
+
+$(OBJ_DIR)/%.o: src/%.c | $(OBJ_DIR) $(OBJ_DIRS)
+	$(Q)echo "  CC        $<"
 	$(Q)$(CC) -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
 
-$(OBJ_DIR)/%.o: src/%.S | $(OBJ_DIR)
-	$(Q)echo "  AS        $(notdir $<)"
+$(OBJ_DIR)/%.o: src/%.S | $(OBJ_DIR) $(OBJ_DIRS)
+	$(Q)echo "  AS        $<"
 	$(Q)$(CC) -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
