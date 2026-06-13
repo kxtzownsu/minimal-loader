@@ -1,3 +1,6 @@
 #include <stdint.h>
+#include "setup.h"
 
-void main(){};
+void main(){
+  init_cpu();
+};

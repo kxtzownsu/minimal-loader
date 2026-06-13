@@ -18,7 +18,7 @@ MKDIR ?= mkdir
 TOUCH ?= touch
 PYTHON3 ?= python3
 
-INCLUDES += -Iinclude
+INCLUDES += -I$(REPO_ROOT)/include -I$(REPO_ROOT)/include/src
 CFLAGS += $(INCLUDES) \
 	-Wall \
 	-std=gnu99 \
@@ -35,6 +35,7 @@ LDFLAGS += -march=armv7-m -mcpu=cortex-m3 -mthumb -nostartfiles -nostdlib -nostd
 OBJS += $(OBJ_DIR)/init.o
 OBJS += $(OBJ_DIR)/main.o
 OBJS += $(OBJ_DIR)/vectors.o
+OBJS += $(OBJ_DIR)/setup.o
 
 ifeq ($(VERBOSE),)
 Q := @
