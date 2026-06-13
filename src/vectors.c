@@ -11,7 +11,7 @@ const func vectors[] __attribute__((section(".text.vecttable"))) = {
     common_handler, // NMI
     common_handler, // HardFault
     common_handler, // MPUFault
-	  common_handler, // BusFault
+    common_handler, // BusFault
     common_handler, // UsageFault
     common_handler, // reserved
     common_handler, // reserved
