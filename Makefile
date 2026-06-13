@@ -36,6 +36,7 @@ OBJS += $(OBJ_DIR)/init.o
 OBJS += $(OBJ_DIR)/main.o
 OBJS += $(OBJ_DIR)/vectors.o
 OBJS += $(OBJ_DIR)/setup.o
+OBJS += $(OBJ_DIR)/uart.o
 
 ifeq ($(VERBOSE),)
 Q := @
