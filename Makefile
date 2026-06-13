@@ -25,5 +25,11 @@ $(ELF_DIR)/loader_%.elf: $(OBJS) $(LDS_GEN_DIR)/generated_%.lds | $(ELF_DIR)
 	$(Q)echo "  LD        $(notdir $@)"
 	$(Q)$(LD) $(OBJS) -o $@ $(LDFLAGS) -T $(LDS_GEN_DIR)/generated_$*.lds
 
-$(BDIR)/minimal-loader.ro_%.signed.bin: $(ELF_DIR)/loader_%.elf | $(BDIR)
-	@echo ""
+$(BDIR)/minimal-loader.ro_%.signed.bin: $(ELF_DIR)/loader_%.elf $(SIGNER) $(SIGNER_MANIFEST) $(PRIVKEY) | $(BDIR)
+	$(Q)echo "  SIGN      $(notdir $@)"
+	$(Q)$(SIGNER) \
+		--input $< \
+		--output $@ \
+		--key $(PRIVKEY) \
+		--json $(SIGNER_MANIFEST) \
+		--format bin
