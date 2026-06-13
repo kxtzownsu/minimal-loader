@@ -17,12 +17,11 @@ usage() {
   cat <<EOF
 carver: a minimal extraction utility for GSC images
 
-usage: \`$0\` --input=[file] --output=[file] --section=[section] [flags]
-example: \`$0\` --input=cr50.bin.prod --output=ro.bin.signed --section=RO --keep-header
+usage: $0 --input=[file] --output=[file] --section=[section] [flags]
+example: $0 --input=cr50.bin.prod --output=ro_a.signed.bin --section=RO --keep-header
 
 
 flags:
-    --cr50        - cr50 images (default. supports Haven & Citadel images)
     --keep-header - keep the SignedHeader
     --b           - extract from the B region
     --verbose     - verbose logging
@@ -64,8 +63,6 @@ parse_args() {
         shift
         [ "$#" -gt 0 ] || die "--section needs a value"
         SECTION=$1
-        ;;
-      --cr50)
         ;;
       --keep-header)
         KEEP_HEADER=1
