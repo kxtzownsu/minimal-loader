@@ -5,11 +5,24 @@ include $(MAKE_SCRIPTS_DIR)/variables.mk
 include $(MAKE_SCRIPTS_DIR)/toolchain.mk
 include $(MAKE_SCRIPTS_DIR)/directories.mk
 include $(MAKE_SCRIPTS_DIR)/cleanup.mk
+include $(MAKE_SCRIPTS_DIR)/linker.mk
 
 include $(MAKE_SCRIPTS_DIR)/obj.mk
 
-## format:
+## echo format:
 ## '[2-space padding][8-char word][2-space padding][extra info, e.g: filename]'
-all: $(BDIR) $(OBJ_DIR) $(ELF_DIR) $(OBJS)
-	$(Q)echo "  LD        $(ELF_DIR)/final.elf"
-	$(Q)$(LD) $(OBJS) -o $(ELF_DIR)/final.elf $(LDFLAGS) -T linker/loader.ld
+
+SLOTS := a b
+PROGS := $(foreach slot,$(SLOTS),$(BDIR)/minimal-loader.ro_$(slot).signed.bin)
+
+all: $(PROGS)
+
+.PHONY: clean
+.SECONDARY: $(foreach slot,$(SLOTS),$(LDS_GEN_DIR)/generated_$(slot).lds $(ELF_DIR)/loader_$(slot).elf)
+
+$(ELF_DIR)/loader_%.elf: $(OBJS) $(LDS_GEN_DIR)/generated_%.lds | $(ELF_DIR)
+	@echo "  LD        $(notdir $@)"
+	$(Q)$(LD) $(OBJS) -o $@ $(LDFLAGS) -T $(LDS_GEN_DIR)/generated_$*.lds
+
+$(BDIR)/minimal-loader.ro_%.signed.bin: $(ELF_DIR)/loader_%.elf | $(BDIR)
+	@echo ""

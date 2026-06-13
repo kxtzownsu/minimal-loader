@@ -6,3 +6,6 @@ $(OBJ_DIR):
 
 $(ELF_DIR):
 	$(Q)$(MKDIR) -p $@
+
+$(LDS_GEN_DIR):
+	$(Q)$(MKDIR) -p $@
