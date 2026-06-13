@@ -43,8 +43,8 @@ Q :=
 CFLAGS += -DDEBUG
 endif
 
-all: $(OBJS)
-	$(LD) $(OBJS) -o build/final.elf $(LDFLAGS) -T $(REPO_ROOT)/linker/loader.ld
+all: $(ELF_DIR) $(OBJS)
+	$(LD) $(OBJS) -o $(ELF_DIR)/final.elf $(LDFLAGS) -T $(REPO_ROOT)/linker/loader.ld
 
 clean:
 	$(Q)$(RM) -rf build
