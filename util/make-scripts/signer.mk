@@ -6,5 +6,5 @@ LOADER_SLOT_SIZE ?= 0x4000
 signer: $(SIGNER)
 
 $(SIGNER):
-	@echo "  MAKE      util/signer"
+	$(Q)echo "  MAKE      util/signer"
 	$(Q)$(MAKE) -C util/signer REPO_ROOT=$(abspath .) ODIR=$(abspath $(BDIR)/util/signer) ARCH=$(HOST_ARCH)

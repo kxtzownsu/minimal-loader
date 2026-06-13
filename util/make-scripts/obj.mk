@@ -7,9 +7,9 @@ OBJS += $(OBJ_DIR)/uart.o
 ## format:
 ## '[2-space padding][8-char word][2-space padding][extra info, e.g: filename]'
 $(OBJ_DIR)/%.o: src/%.c | $(OBJ_DIR)
-	@echo "  CC        $(notdir $<)"
+	$(Q)echo "  CC        $(notdir $<)"
 	$(Q)$(CC) -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
 
 $(OBJ_DIR)/%.o: src/%.S | $(OBJ_DIR)
-	@echo "  AS        $(notdir $<)"
+	$(Q)echo "  AS        $(notdir $<)"
 	$(Q)$(CC) -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
