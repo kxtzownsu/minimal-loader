@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <string.h>
 #include <stdbool.h>
 
 #include "setup.h"
@@ -14,7 +15,13 @@ void main(){
   uart_txchar('w');
   uart_txchar('\n');
 
-  launch_image(CONFIG_RO_A_BASE, CONFIG_RO_SIZE);
+  uint32_t rc = launch_image(CONFIG_RO_A_BASE, CONFIG_RO_SIZE);
+  uart_txstr("rc=");
+  uart_txhex32(rc);
+
+  rc = launch_image(CONFIG_RO_B_BASE, CONFIG_RO_SIZE);
+  uart_txstr("rc=");
+  uart_txhex32(rc);
 
   while (true)
     asm("wfi");
