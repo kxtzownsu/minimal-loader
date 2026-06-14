@@ -16,10 +16,7 @@ enum launch_code launch_RO(uint32_t addr, size_t max_size){
   if (rc != LAUNCH_SUCCESS)
     return rc;
 
-  // TODO: this will set CPU0_I_STAGING_REGIONx values
-  // arg1 is the region
-  // arg2 is the SignedHeader
-  // stage_rx_region(0, hdr);
+  stage_rx_region(0, hdr);
 
   return LAUNCH_SUCCESS;
 }
