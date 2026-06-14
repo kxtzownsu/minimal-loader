@@ -23,6 +23,14 @@ void main(){
   uart_txstr("rc=");
   uart_txhex32(rc);
 
+  rc = launch_image(CONFIG_RW_A_BASE, CONFIG_RW_SIZE);
+  uart_txstr("rc=");
+  uart_txhex32(rc);
+
+  rc = launch_image(CONFIG_RW_B_BASE, CONFIG_RW_SIZE);
+  uart_txstr("rc=");
+  uart_txhex32(rc);
+
   while (true)
     asm("wfi");
 };
