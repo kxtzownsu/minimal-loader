@@ -1,5 +1,6 @@
 #include "registers.h"
 
+#ifdef CHIP_HAVEN
 void sha256(const void *data, size_t len, uint32_t *digest) {
   const uint8_t *bp = (const uint8_t *)data;
   const uint32_t *wp;
@@ -41,3 +42,4 @@ void sha256(const void *data, size_t len, uint32_t *digest) {
 
   GREG32(KEYMGR, SHA_ITOP) = 0;
 }
+#endif /* ifdef(CHIP_HAVEN) */
