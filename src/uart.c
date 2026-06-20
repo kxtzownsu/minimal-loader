@@ -9,22 +9,6 @@ void uart_txchar(char tx) {
   GREG32(UART, WDATA) = tx;
 }
 
-void uart_txstr(const char *str) {
-  while (*str)
-    uart_txchar(*str++);
-}
-
-void uart_txhex32(uint32_t value) {
-  int i;
-
-  uart_txstr("0x");
-
-  for (i = 28; i >= 0; i -= 4) {
-    uint32_t nibble = (value >> i) & 0xf;
-    uart_txchar(nibble < 10 ? '0' + nibble : 'a' + nibble - 10);
-  }
-}
-
 uint32_t uart_tx_ready() {
   return (GREG32(UART, STATE) ^ 1) & 1;
 }
