@@ -14,6 +14,7 @@ void main() {
   init_cpu();
   init_uart();
 
+  printf("\n");
   printf("minimal-loader\n");
 
   uint32_t rc = launch_image(CONFIG_RW_A_BASE, CONFIG_RW_SIZE);
