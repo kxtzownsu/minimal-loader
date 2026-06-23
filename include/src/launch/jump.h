@@ -23,4 +23,6 @@ enum launch_code verify_SignedHeader(const struct SignedHeader *hdr, size_t max_
 void stage_rx_region(uint32_t region, const struct SignedHeader *hdr);
 void hash_region(uint32_t info_base, uint32_t fuses[FUSE_MAX], uint32_t info[INFO_MAX], struct sha256_hashes *hashes, const struct SignedHeader *hdr);
 void print_hashes(const struct sha256_hashes *hashes, const struct SignedHeader *hdr);
+void set_runlevel(permission_level lvl);
+
 #endif /* ifndef __MINIMAL_LOADER_LAUNCH_JUMP_H */

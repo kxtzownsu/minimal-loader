@@ -36,8 +36,8 @@ enum launch_code launch_RW(uint32_t addr, size_t max_size) {
     )
 	  return LAUNCH_INVALID_HASH;
   
-/* TODO(kxtz): uncomment as the functions are implemented
   set_runlevel(PERMISSION_MEDIUM); // RW firmware runs at PERMISSION_MEDIUM
+/* TODO(kxtz): uncomment as the functions are implemented
   set_fwr(hdr);
   protect_flash_region(addr, hdr);
 

@@ -111,3 +111,10 @@ void print_hashes(const struct sha256_hashes *hashes, const struct SignedHeader 
     hdr->info_chk_ == hashes->info_hash[0]
   );
 }
+
+void set_runlevel(permission_level lvl){
+  GREG32(GLOBALSEC, CPU0_S_PERMISSION) = lvl;
+  GREG32(GLOBALSEC, CPU0_S_DAP_PERMISSION) = lvl;
+  GREG32(GLOBALSEC, DDMA0_PERMISSION) = lvl;
+  GREG32(GLOBALSEC, SOFTWARE_LVL) = lvl;
+}
