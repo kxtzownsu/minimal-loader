@@ -2,7 +2,7 @@
 #include "launch/jump.h"
 #include "flash_layout.h"
 
-enum launch_code launch_RO(uint32_t addr, size_t max_size){
+enum launch_code launch_RO(uint32_t addr, size_t max_size) {
   const struct SignedHeader *hdr = (const struct SignedHeader *)addr;
   enum launch_code rc;
 
