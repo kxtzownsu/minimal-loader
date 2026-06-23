@@ -4,8 +4,23 @@ CROSS_COMPILE ?= arm-none-eabi-
 # We expect `VERBOSE=1`, nothing else.
 ifeq ($(VERBOSE),1)
 Q :=
+
+# We expect `NO_DEBUG=1`, nothing else.
+ifneq ($(NO_DEBUG),1)
+CFLAGS += -DDEBUG
+endif
+
+# Verbose isn't set
 else
 Q := @
+
+# We may want debugging without crowded
+# compilation logs, allow the user to
+# enable debug even without VERBOSE
+ifeq ($(DEBUG),1)
+CFLAGS += -DDEBUG
+endif
+
 endif
 
 ### Build utilities ###
