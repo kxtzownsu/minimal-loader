@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 
@@ -6,30 +7,17 @@
 #include "uart.h"
 #include "flash_layout.h"
 #include "launch/launch.h"
+#include "printf.h"
+#include "debug.h"
 
-void main(){
+void main() {
   init_cpu();
   init_uart();
 
-  uart_txchar('h');
-  uart_txchar('w');
-  uart_txchar('\n');
+  printf("minimal-loader\n");
 
-  uint32_t rc = launch_image(CONFIG_RO_A_BASE, CONFIG_RO_SIZE);
-  uart_txstr("rc=");
-  uart_txhex32(rc);
-
-  rc = launch_image(CONFIG_RO_B_BASE, CONFIG_RO_SIZE);
-  uart_txstr("rc=");
-  uart_txhex32(rc);
-
-  rc = launch_image(CONFIG_RW_A_BASE, CONFIG_RW_SIZE);
-  uart_txstr("rc=");
-  uart_txhex32(rc);
-
-  rc = launch_image(CONFIG_RW_B_BASE, CONFIG_RW_SIZE);
-  uart_txstr("rc=");
-  uart_txhex32(rc);
+  uint32_t rc = launch_image(CONFIG_RW_A_BASE, CONFIG_RW_SIZE);
+  DLOG("RW_A rc: 0x%08X\n", rc);
 
   while (true)
     asm("wfi");
