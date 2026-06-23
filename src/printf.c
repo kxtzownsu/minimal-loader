@@ -6,8 +6,8 @@
 
 static const char hexdigits[] = "0123456789ABCDEF";
 
-uint32_t print_uint(uint32_t val, uint32_t base, uint32_t pad_width) {
-  uint32_t written = 0;
+static int print_uint(uint32_t val, uint32_t base, int pad_width) {
+  int written = 0;
 
   if (pad_width > 1 || val >= base)
     written += print_uint(val / base, base, pad_width - 1);
@@ -16,12 +16,23 @@ uint32_t print_uint(uint32_t val, uint32_t base, uint32_t pad_width) {
   return written + 1;
 }
 
-uint32_t vfnprintf(const char *format, va_list args) {
-  uint32_t written = 0;
+static int print_str(const char *str) {
+  int written = 0;
+
+  while (*str) {
+    uart_txchar(*str++);
+    written++;
+  }
+
+  return written;
+}
+
+static int vfnprintf(const char *format, va_list args) {
+  int written = 0;
 
   while (*format) {
-    uint32_t c = *format++;
-    uint32_t pad_width = 0;
+    int c = *format++;
+    int pad_width = 0;
 
     if (c != '%') {
       uart_txchar(c);
@@ -40,24 +51,45 @@ uint32_t vfnprintf(const char *format, va_list args) {
 
     switch (c) {
       case 'd': {
-        uint32_t val = va_arg(args, uint32_t);
+        int val = va_arg(args, int);
+        uint32_t magnitude = val;
 
-        written += print_uint(val, 10, pad_width);
+        if (val < 0) {
+          uart_txchar('-');
+          written++;
+          magnitude = 0u - magnitude;
+        }
+
+        written += print_uint(magnitude, 10, pad_width);
         break;
       }
 
       case 'h': {
-        uint32_t len = va_arg(args, uint32_t);
+        int len = va_arg(args, int);
         char *ptr = va_arg(args, char *);
 
         while (len > 0) {
-          uint32_t byte = (uint32_t)*ptr++;
+          uint32_t byte = (uint32_t)(unsigned char)*ptr++;
 
           uart_txchar(hexdigits[byte >> 4]);
           uart_txchar(hexdigits[byte & 0xf]);
           written += 2;
           len--;
         }
+        break;
+      }
+
+      case 's': {
+        const char *str = va_arg(args, const char *);
+
+        written += print_str(str);
+        break;
+      }
+
+      case 'u': {
+        uint32_t val = va_arg(args, uint32_t);
+
+        written += print_uint(val, 10, pad_width);
         break;
       }
 
@@ -85,8 +117,8 @@ uint32_t vfnprintf(const char *format, va_list args) {
   return written;
 }
 
-uint32_t printf(const char *format, ...) {
-  uint32_t written;
+int printf(const char *format, ...) {
+  int written;
   va_list args;
 
   va_start(args, format);
