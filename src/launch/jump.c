@@ -118,3 +118,72 @@ void set_runlevel(permission_level lvl){
   GREG32(GLOBALSEC, DDMA0_PERMISSION) = lvl;
   GREG32(GLOBALSEC, SOFTWARE_LVL) = lvl;
 }
+
+void set_fwr(const struct SignedHeader *hdr) {
+  int i;
+
+  for (i = 0; i < 6; ++i) {
+    GREG32_ADDR(KEYMGR, HKEY_FWR0)[i] = hdr->tag[i];
+  }
+  GREG32(KEYMGR, HKEY_FWR7) = false;
+  
+  GREG32(KEYMGR, FW_MAJOR_VERSION) = hdr->major_;
+  GREG32(KEYMGR, FWR_VLD) = 2;
+  GREG32(KEYMGR, FWR_LOCK) = 0;
+}
+
+void protect_flash_region(uint32_t region, uint32_t addr, const struct SignedHeader *hdr) {
+  uint32_t ctrl_offset;
+  uint32_t base_offset;
+
+  if (region > 7)
+    return;
+
+  ctrl_offset = GC_GLOBALSEC_FLASH_REGION0_CTRL_OFFSET + region * 4;
+  base_offset = GC_GLOBALSEC_FLASH_REGION0_BASE_ADDR_OFFSET + region * 8;
+
+  REG32(GC_GLOBALSEC_BASE_ADDR + base_offset) = addr;
+  REG32(GC_GLOBALSEC_BASE_ADDR + base_offset + 4) = hdr->image_size - 1;
+  REG32(GC_GLOBALSEC_BASE_ADDR + ctrl_offset) = 3;
+}
+
+void disarm_ram_guards() {
+  GREG32(GLOBALSEC, CPU0_D_REGION0_CTRL) = 7;
+  GREG32(GLOBALSEC, CPU0_D_REGION1_CTRL) = 7;
+  GREG32(GLOBALSEC, CPU0_D_REGION2_CTRL) = 7;
+}
+
+char *flash_region_to_string(uint32_t addr){
+  switch(addr) {
+    case CONFIG_RO_A_BASE:
+      return "RO_A";
+      break;
+    case CONFIG_RO_B_BASE:
+      return "RO_B";
+      break;
+    case CONFIG_RW_A_BASE:
+      return "RW_A";
+      break;
+    case CONFIG_RW_B_BASE:
+      return "RW_B";
+      break;
+    default:
+      return "Unknown";
+      break;
+  }
+}
+
+__attribute__((noreturn))
+void _jump_to_address(const void *addr)
+{
+  GREG32(M3, VTOR) = (unsigned)addr;
+
+	__asm__ volatile(
+		"ldr sp, [%0]\n"
+		"ldr pc, [%0, #4]\n"
+		:
+		: "r"(addr)
+		: "memory");
+
+	__builtin_unreachable();
+}

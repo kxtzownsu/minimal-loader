@@ -24,5 +24,10 @@ void stage_rx_region(uint32_t region, const struct SignedHeader *hdr);
 void hash_region(uint32_t info_base, uint32_t fuses[FUSE_MAX], uint32_t info[INFO_MAX], struct sha256_hashes *hashes, const struct SignedHeader *hdr);
 void print_hashes(const struct sha256_hashes *hashes, const struct SignedHeader *hdr);
 void set_runlevel(permission_level lvl);
+void set_fwr(const struct SignedHeader *hdr);
+void protect_flash_region(uint32_t region, uint32_t addr, const struct SignedHeader *hdr);
+void disarm_ram_guards();
+char *flash_region_to_string(uint32_t addr);
+void _jump_to_address(const void *addr);
 
 #endif /* ifndef __MINIMAL_LOADER_LAUNCH_JUMP_H */

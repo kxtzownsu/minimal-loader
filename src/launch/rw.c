@@ -2,6 +2,7 @@
 #include "launch/jump.h"
 #include "flash_layout.h"
 #include "signed_header.h"
+#include "printf.h"
 
 enum launch_code launch_RW(uint32_t addr, size_t max_size) {
   const struct SignedHeader *hdr = (const struct SignedHeader *)addr;
@@ -37,15 +38,14 @@ enum launch_code launch_RW(uint32_t addr, size_t max_size) {
 	  return LAUNCH_INVALID_HASH;
   
   set_runlevel(PERMISSION_MEDIUM); // RW firmware runs at PERMISSION_MEDIUM
-/* TODO(kxtz): uncomment as the functions are implemented
   set_fwr(hdr);
-  protect_flash_region(addr, hdr);
+  protect_flash_region(1, addr, hdr);
 
   disarm_ram_guards();
 
-  printf("jump @%08x (%s)\n", addr, flash_region_to_string);
-  _jump_to_address(addr + sizeof(SignedHeader));
-*/
+  printf("jump @%08x (%s)\n", addr, flash_region_to_string(addr));
+  _jump_to_address((const void *)addr + sizeof(SignedHeader));
+
   /* This should never be reached */
   return LAUNCH_SUCCESS;
 }
